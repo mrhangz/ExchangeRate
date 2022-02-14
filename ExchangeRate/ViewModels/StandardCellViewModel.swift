@@ -17,7 +17,7 @@ struct StandardCellViewModel {
     }
     
     func displayingCode() -> String {
-        return code
+        return "\(code ?? ""), \(DataInstance.shared.getDescriptionFor(code: code))"
     }
     
     func displayingRate() -> String {

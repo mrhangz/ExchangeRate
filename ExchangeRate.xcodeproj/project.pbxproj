@@ -27,6 +27,9 @@
 		A85FE9BB27B8E8A700C14676 /* PairConversionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9BA27B8E8A700C14676 /* PairConversionViewController.swift */; };
 		A85FE9BD27B985FB00C14676 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9BC27B985FB00C14676 /* Utilities.swift */; };
 		A85FE9BF27B9E93100C14676 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9BE27B9E93100C14676 /* Errors.swift */; };
+		A85FE9C127B9F6B000C14676 /* PairConversionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9C027B9F6B000C14676 /* PairConversionViewModel.swift */; };
+		A85FE9C327BA198700C14676 /* StarndardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9C227BA198700C14676 /* StarndardListViewModel.swift */; };
+		A85FE9C527BA1C2900C14676 /* CodeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85FE9C427BA1C2900C14676 /* CodeListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		A85FE9BA27B8E8A700C14676 /* PairConversionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairConversionViewController.swift; sourceTree = "<group>"; };
 		A85FE9BC27B985FB00C14676 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		A85FE9BE27B9E93100C14676 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		A85FE9C027B9F6B000C14676 /* PairConversionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairConversionViewModel.swift; sourceTree = "<group>"; };
+		A85FE9C227BA198700C14676 /* StarndardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarndardListViewModel.swift; sourceTree = "<group>"; };
+		A85FE9C427BA1C2900C14676 /* CodeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +202,9 @@
 			children = (
 				A83F380C27B3CA6600766A40 /* CodeCellViewModel.swift */,
 				A83F381027B81B0F00766A40 /* StandardCellViewModel.swift */,
+				A85FE9C027B9F6B000C14676 /* PairConversionViewModel.swift */,
+				A85FE9C227BA198700C14676 /* StarndardListViewModel.swift */,
+				A85FE9C427BA1C2900C14676 /* CodeListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -332,7 +341,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A83F380F27B81ADF00766A40 /* StandardTableViewCell.swift in Sources */,
+				A85FE9C127B9F6B000C14676 /* PairConversionViewModel.swift in Sources */,
+				A85FE9C327BA198700C14676 /* StarndardListViewModel.swift in Sources */,
 				A83F37FD27B2CACD00766A40 /* APIManager.swift in Sources */,
+				A85FE9C527BA1C2900C14676 /* CodeListViewModel.swift in Sources */,
 				A83F37D027B2C7AC00766A40 /* CodeListViewController.swift in Sources */,
 				A83F37CC27B2C7AC00766A40 /* AppDelegate.swift in Sources */,
 				A85FE9BD27B985FB00C14676 /* Utilities.swift in Sources */,

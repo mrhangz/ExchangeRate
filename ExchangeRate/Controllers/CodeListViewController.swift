@@ -14,64 +14,45 @@ protocol CodeListViewControllerDelegate: AnyObject {
 class CodeListViewController: UIViewController {
     @IBOutlet private var searchTextField: UITextField?
     @IBOutlet private var tableView: UITableView?
-    private var supportedCodes: [[String]]?
     weak var delegate: CodeListViewControllerDelegate?
+    var viewModel: CodeListViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         searchTextField?.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
         
-        if supportedCodes == nil {
-            APIManager().getSupportedCodes { [weak self] result in
-                switch result {
-                case .success(let response):
-                    print(response)
-                    DataInstance.shared.supportedCodes = response.supportedCodes
-                    self?.supportedCodes = response.supportedCodes
-                    self?.tableView?.reloadData()
-                case .failure(let error):
-                    let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "OK", style: .destructive)
-                    alert.addAction(okAction)
-                    self?.navigationController?.present(alert, animated: true)
-                }
-            }
+        viewModel = CodeListViewModel()
+        
+        viewModel.didUpdate = { [weak self] in
+            self?.tableView?.reloadData()
         }
+        viewModel.search(keyword: nil)
     }
     
     @objc func textDidChange() {
-        if let searchText = searchTextField?.text {
-            supportedCodes = DataInstance.shared.searchSupportedCodes(keyword: searchText)
-        } else {
-            supportedCodes = DataInstance.shared.supportedCodes
-        }
-        
-        tableView?.reloadData()
+        viewModel.search(keyword: searchTextField?.text)
     }
 }
 
 extension CodeListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return supportedCodes?.count ?? 0
+        return viewModel.cellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CodeCell", for: indexPath) as? CodeTableViewCell, let code = supportedCodes?[indexPath.row] else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CodeCell", for: indexPath) as? CodeTableViewCell else {
             return UITableViewCell()
         }
         
-        let cellViewModel = CodeCellViewModel(code: code)
+        let cellViewModel = viewModel.getCellViewModel(at: indexPath.row)
         cell.displayCell(viewModel: cellViewModel)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let code = supportedCodes?[indexPath.row] else {
-            return
-        }
-        
+        let code = viewModel.getCodeForIndex(indexPath.row)
         delegate?.codeDidSelect(code: code)
         navigationController?.popViewController(animated: true)
     }

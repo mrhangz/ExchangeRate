@@ -10,27 +10,23 @@ import UIKit
 class StandardListViewController: UIViewController {
     @IBOutlet private var tableView: UITableView?
     @IBOutlet private var codeButton: UIButton?
-    private var conversionRates: [String: Double]?
+    var viewModel: StandardListViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getStandard(code: "THB")
-    }
-    
-    func getStandard(code: String) {
-        APIManager().getStandard(code: code) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.conversionRates = response.conversionRates
-                self?.tableView?.reloadData()
-            case .failure(let error):
-                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .destructive)
-                alert.addAction(okAction)
-                self?.navigationController?.present(alert, animated: true)
-            }
+        viewModel = StandardListViewModel()
+        viewModel.didUpdate = { [weak self] in
+          self?.tableView?.reloadData()
         }
+        viewModel.didFail = { [weak self] error in
+          let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+          let action = UIAlertAction(title: "OK", style: .destructive)
+          alert.addAction(action)
+          self?.present(alert, animated: true, completion: nil)
+        }
+        
+        viewModel.getStandard(code: "THB")
     }
     
     @IBAction func codeTapped(sender: UIButton) {
@@ -45,17 +41,15 @@ class StandardListViewController: UIViewController {
 
 extension StandardListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversionRates?.count ?? 0
+        return viewModel.getCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "StandardCell", for: indexPath) as? StandardTableViewCell, let rates = conversionRates else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "StandardCell", for: indexPath) as? StandardTableViewCell else {
             return UITableViewCell()
         }
         
-        let code = Array(rates.keys).sorted()[indexPath.row]
-        let rate = rates[code] ?? 0
-        let cellViewModel = StandardCellViewModel(code: code, rate: rate)
+        let cellViewModel = viewModel.getCellViewModel(at: indexPath.row)
         cell.displayCell(viewModel: cellViewModel)
         
         return cell
@@ -65,6 +59,6 @@ extension StandardListViewController: UITableViewDelegate, UITableViewDataSource
 extension StandardListViewController: CodeListViewControllerDelegate {
     func codeDidSelect(code: [String]) {
         codeButton?.setTitle("\(code[0]), \(code[1])", for: .normal)
-        getStandard(code: code[0])
+        viewModel.getStandard(code: code[0])
     }
 }
